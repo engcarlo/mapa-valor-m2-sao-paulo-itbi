@@ -1,0 +1,10 @@
+configuracao,pergunta,n_treino,n_teste,r2_log,mdape_%,dentro_de_20%,segundos
+A baseline Huber aditivo (2019+),ponto de partida,306170,99649,0.6602029550835342,18.74847955422232,52.730082589890515,17
+B HGB: área+padrão+localização,só trocar o algoritmo ajuda?,306170,99649,0.6738364952070499,19.737879962319703,50.56046724001244,5
+"C + idade, terreno, fração ideal",atributos do edifício agregam?,306170,99649,0.7081880171650905,17.976663462764698,54.858553522865265,6
+D + tempo (meses),deriva de mercado local?,306170,99649,0.7068015390962508,17.1678482729661,56.58461198807816,6
+E = D com histórico completo (2006+),o ML resolve o drift de 21 anos?,965371,99649,0.7064879048893264,17.422081919416897,56.118977611416064,14
+"F = D, um modelo por padrão",modelo por classe vs global,306170,99649,0.7067474476044788,16.913846180742564,57.16765848126926,8
+H = D + correção de viés (calibração),o viés do teste é removível sem olhar o teste?,306170,99649,0.6985543339262896,16.581281101695076,57.68949011028711,6
+I = F + correção de viés (calibração),melhor combinação: por classe + viés corrigido,306170,99649,0.6998923160344048,16.416041916457136,58.00258908769782,7
+G = D + valor venal (ablação fiscal),quanto do ganho vem do valor fiscal?,306170,99649,0.7987568149466625,16.08984657043475,58.78634005358809,6

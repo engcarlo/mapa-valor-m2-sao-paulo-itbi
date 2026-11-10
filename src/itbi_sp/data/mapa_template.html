@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preço/m² de apartamentos por distrito — São Paulo (2006–2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2321; --ink-soft:#4a534f; --paper:#f6f4ee; --paper-2:#ffffff;
+    --line:#d9d5c7; --accent:#0f6e56; --accent-soft:#e1f0ea;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto; padding:48px 32px 64px;}
+  header{margin-bottom:36px;}
+  header .eyebrow{font-size:13px; color:var(--ink-soft); margin:0 0 10px;}
+  h1{font-family:'Newsreader',serif; font-weight:500; font-size:34px; line-height:1.25; margin:0 0 12px; max-width:760px;}
+  header p.lede{font-size:16px; line-height:1.6; color:var(--ink-soft); max-width:640px; margin:0;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:36px; align-items:start; margin-top:36px;}
+  @media (max-width:840px){ .layout{grid-template-columns:1fr;} }
+  .panel{position:sticky; top:24px;}
+  .panel h2{font-size:13px; text-transform:none; color:var(--ink-soft); margin:0 0 12px; font-weight:500;}
+  .padrao-list{display:flex; flex-direction:column; gap:4px; margin-bottom:26px;}
+  .padrao-btn{
+    text-align:left; padding:9px 12px; border:none; background:transparent; border-radius:6px;
+    font-family:'IBM Plex Sans',sans-serif; font-size:14px; color:var(--ink); cursor:pointer;
+    border-left:2px solid transparent; transition:background .15s;
+  }
+  .padrao-btn:hover{background:var(--paper-2);}
+  .padrao-btn.active{background:var(--accent-soft); border-left:2px solid var(--accent); color:var(--accent); font-weight:500;}
+
+  .slider-box{margin-bottom:26px;}
+  .slider-anos{font-family:'IBM Plex Mono',monospace; font-size:19px; margin-bottom:10px;}
+  .slider-anos span{color:var(--accent);}
+  .range-dupla{position:relative; height:34px;}
+  .range-dupla input[type=range]{
+    position:absolute; width:100%; top:10px; margin:0; -webkit-appearance:none; background:transparent; pointer-events:none;
+  }
+  .range-dupla input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; pointer-events:all; width:14px; height:14px; border-radius:50%;
+    background:var(--accent); cursor:pointer; border:2px solid var(--paper-2); box-shadow:0 0 0 1px var(--accent);
+  }
+  .range-dupla input[type=range]::-moz-range-thumb{
+    pointer-events:all; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; border:2px solid var(--paper-2);
+  }
+  .range-dupla input[type=range]::-webkit-slider-runnable-track{background:transparent;}
+  .track-bg{position:absolute; top:15px; height:4px; width:100%; background:var(--line); border-radius:2px;}
+  .track-fill{position:absolute; top:15px; height:4px; background:var(--accent); border-radius:2px;}
+  .slider-hint{font-size:11.5px; color:var(--ink-soft); margin-top:6px;}
+
+  .stat{margin-bottom:14px;}
+  .stat .label{font-size:12px; color:var(--ink-soft); margin-bottom:2px;}
+  .stat .value{font-family:'IBM Plex Mono',monospace; font-size:19px;}
+  .grid-stats{display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-top:6px;}
+  .grid-stats .item .label{font-size:11px; color:var(--ink-soft);}
+  .grid-stats .item .value{font-family:'IBM Plex Mono',monospace; font-size:14.5px;}
+
+  .legend{margin-top:8px;}
+  .legend-bar{height:10px; border-radius:5px; background:linear-gradient(to right, #dceee6, #0f6e56); margin-bottom:6px;}
+  .legend-labels{display:flex; justify-content:space-between; font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+  main svg{width:100%; height:auto;}
+  .distrito{stroke:var(--paper); stroke-width:0.8; cursor:pointer; transition:opacity .12s;}
+  .distrito:hover{opacity:0.75;}
+  .distrito.sem-dado{fill:#e5e2d8 !important;}
+  .tooltip{
+    position:absolute; pointer-events:none; background:var(--ink); color:var(--paper);
+    padding:10px 13px; border-radius:6px; font-size:12.5px; line-height:1.6; opacity:0; transition:opacity .1s;
+    max-width:230px; z-index:10;
+  }
+  .tooltip b{font-weight:500;}
+  .tooltip .tt-grid{display:grid; grid-template-columns:1fr 1fr; gap:1px 10px; margin-top:6px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;}
+  .tooltip .tt-grid span.k{color:#b9c2bd;}
+  footer{margin-top:56px; padding-top:24px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-soft); line-height:1.7; max-width:820px;}
+  footer p{margin:0 0 8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Case de ML · Dados abertos de ITBI, Prefeitura de São Paulo</p>
+    <h1>Preço/m² de apartamentos por distrito, padrão construtivo e período</h1>
+    <p class="lede">Estatística descritiva (não modelo preditivo) sobre transações de compra e venda entre 2006 e 2026, com valores trazidos a uma data-base comum via IVG-R (Banco Central) e localização atribuída por geocodificação de CEP, não por texto de bairro. Ajuste o período abaixo para explorar qualquer janela de anos.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="panel">
+      <h2>Padrão construtivo</h2>
+      <div class="padrao-list" id="padrao-list"></div>
+
+      <h2>Período</h2>
+      <div class="slider-box">
+        <div class="slider-anos"><span id="ano-ini-label">2019</span> — <span id="ano-fim-label">2026</span></div>
+        <div class="range-dupla">
+          <div class="track-bg"></div>
+          <div class="track-fill" id="track-fill"></div>
+          <input type="range" id="slider-ini" min="2006" max="2026" value="2019" step="1">
+          <input type="range" id="slider-fim" min="2006" max="2026" value="2026" step="1">
+        </div>
+        <p class="slider-hint">Agrega estatisticamente todas as transações do período — não é uma nova regressão por período.</p>
+      </div>
+
+      <h2>Distrito selecionado</h2>
+      <div class="stat">
+        <div class="label" id="sel-nome">passe o mouse no mapa</div>
+        <div class="value" id="sel-valor">—</div>
+      </div>
+      <div class="grid-stats" id="sel-grid" style="display:none;">
+        <div class="item"><div class="label">mín.</div><div class="value" id="g-min">—</div></div>
+        <div class="item"><div class="label">máx.</div><div class="value" id="g-max">—</div></div>
+        <div class="item"><div class="label">média</div><div class="value" id="g-media">—</div></div>
+        <div class="item"><div class="label">mediana*</div><div class="value" id="g-mediana">—</div></div>
+        <div class="item"><div class="label">desvio-padrão</div><div class="value" id="g-desvio">—</div></div>
+        <div class="item"><div class="label">amplitude</div><div class="value" id="g-amplitude">—</div></div>
+      </div>
+
+      <h2 style="margin-top:22px;">Escala do mapa (mediana)</h2>
+      <div class="legend">
+        <div class="legend-bar"></div>
+        <div class="legend-labels"><span id="leg-min">—</span><span id="leg-max">—</span></div>
+      </div>
+      <p style="font-size:11.5px; color:var(--ink-soft); line-height:1.5; margin-top:14px;">Distritos mais claros/desbotados têm amostra pequena no período/padrão selecionado.</p>
+    </aside>
+
+    <main>
+      <svg id="map" viewBox="0 0 700 620"></svg>
+    </main>
+  </div>
+
+  <footer>
+    <p><b>O que o mapa mostra:</b> estatística descritiva do preço/m² observado (não uma regressão) para cada distrito, no padrão construtivo e período selecionados. Os valores já vêm corrigidos monetariamente para uma data-base comum via IVG-R (BCB, série 21340) antes de qualquer agregação — sem isso, comparar 2007 com 2026 diretamente não faria sentido.</p>
+    <p><b>*Mediana do período:</b> quando o período selecionado abrange mais de um ano, a mediana exibida é uma média ponderada das medianas anuais (aproximação) — n, mínimo, máximo, média e desvio-padrão são exatos (recalculados a partir das estatísticas de cada ano, não estimados).</p>
+    <p><b>Cobertura:</b> localização atribuída via geocodificação de CEP (base de coordenadas por CEP, Censo/OpenAddresses) e associação espacial ponto-em-polígono aos limites oficiais de distrito (GeoSampa) — cerca de 89-91% das transações de apartamento em condomínio no período. Base construída a partir de 21 arquivos anuais de guias de ITBI pagas (2006-2026, 2026 parcial).</p>
+    <p>Não constitui laudo de avaliação nem recomendação de investimento.</p>
+  </footer>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>__D3JS__</script>
+<script>
+const GEODATA = __GEODATA__;
+const STATS = __STATSDATA__;
+const ROTULOS = __ROTULOS__;
+
+const padroes = Object.keys(ROTULOS);
+let padraoAtual = '22';
+let anoIni = 2019, anoFim = 2026;
+
+const ANO_MIN = 2006, ANO_MAX = 2026;
+
+const svg = d3.select('#map');
+const projection = d3.geoMercator().fitSize([700, 600], GEODATA);
+const path = d3.geoPath(projection);
+const tooltip = d3.select('#tooltip');
+
+const fmtMoeda = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+
+function agregarAnos(porAno, ini, fim){
+  let n=0, min=Infinity, max=-Infinity, somaPonderadaMedia=0, somaPonderadaMedianaVal=0, somaPonderadaVarECaudra=0;
+  let algumDado=false;
+  for (let ano=ini; ano<=fim; ano++){
+    const c = porAno[String(ano)];
+    if (!c) continue;
+    const ni=c[0], mini=c[1], maxi=c[2], meani=c[3], mediani=c[4], stdi=c[5];
+    if (ni===0) continue;
+    algumDado = true;
+    n += ni;
+    min = Math.min(min, mini);
+    max = Math.max(max, maxi);
+    somaPonderadaMedia += ni*meani;
+    somaPonderadaMedianaVal += ni*mediani;
+    somaPonderadaVarECaudra += ni*(stdi*stdi + meani*meani);
+  }
+  if (!algumDado || n===0) return null;
+  const media = somaPonderadaMedia/n;
+  const mediana = somaPonderadaMedianaVal/n;
+  const variancia = Math.max(0, somaPonderadaVarECaudra/n - media*media);
+  const desvio = Math.sqrt(variancia);
+  return {n, min, max, media, mediana, desvio, amplitude: max-min};
+}
+
+function statsDoDistrito(pad, distrito){
+  const porAno = (STATS[pad] && STATS[pad][distrito]) || null;
+  if (!porAno) return null;
+  return agregarAnos(porAno, anoIni, anoFim);
+}
+
+function corEscala(pad){
+  const valores = [];
+  Object.keys(STATS[pad]||{}).forEach(dist => {
+    const s = statsDoDistrito(pad, dist);
+    if (s) valores.push(s.mediana);
+  });
+  if (!valores.length) return {scale: () => '#e5e2d8', min:0, max:0};
+  const min = d3.min(valores), max = d3.max(valores);
+  return {scale: d3.scaleSequential(d3.interpolateRgb('#dceee6', '#0f6e56')).domain([min, max]), min, max};
+}
+
+function renderMapa(){
+  const {scale: color, min, max} = corEscala(padraoAtual);
+  document.getElementById('leg-min').textContent = min ? fmtMoeda(min) : '—';
+  document.getElementById('leg-max').textContent = max ? fmtMoeda(max) : '—';
+
+  const paths = svg.selectAll('path.distrito').data(GEODATA.features, d => d.properties.nome);
+
+  paths.join('path')
+    .attr('class', d => {
+      const s = statsDoDistrito(padraoAtual, d.properties.nome);
+      return 'distrito' + (s ? '' : ' sem-dado');
+    })
+    .attr('d', path)
+    .attr('fill', d => {
+      const s = statsDoDistrito(padraoAtual, d.properties.nome);
+      return s ? color(s.mediana) : '#e5e2d8';
+    })
+    .attr('fill-opacity', d => {
+      const s = statsDoDistrito(padraoAtual, d.properties.nome);
+      if (!s) return 1;
+      if (s.n < 15) return 0.4;
+      if (s.n < 60) return 0.7;
+      return 1;
+    })
+    .on('mousemove', function(event, d){
+      const nomeFmt = d.properties.nome.charAt(0) + d.properties.nome.slice(1).toLowerCase();
+      const s = statsDoDistrito(padraoAtual, d.properties.nome);
+
+      document.getElementById('sel-nome').textContent = nomeFmt;
+      document.getElementById('sel-grid').style.display = s ? 'grid' : 'none';
+
+      if (s){
+        document.getElementById('sel-valor').textContent = fmtMoeda(s.mediana) + ' /m² (mediana)';
+        document.getElementById('g-min').textContent = fmtMoeda(s.min);
+        document.getElementById('g-max').textContent = fmtMoeda(s.max);
+        document.getElementById('g-media').textContent = fmtMoeda(s.media);
+        document.getElementById('g-mediana').textContent = fmtMoeda(s.mediana);
+        document.getElementById('g-desvio').textContent = fmtMoeda(s.desvio);
+        document.getElementById('g-amplitude').textContent = fmtMoeda(s.amplitude);
+      } else {
+        document.getElementById('sel-valor').textContent = 'sem transações no período';
+      }
+
+      tooltip.style('opacity', 1)
+        .style('left', (event.pageX + 14) + 'px')
+        .style('top', (event.pageY - 10) + 'px')
+        .html(function(){
+          if (!s) return '<b>' + nomeFmt + '</b><br>sem transações nesse padrão/período';
+          return '<b>' + nomeFmt + '</b> · n=' + s.n +
+            '<div class="tt-grid">' +
+            '<span class="k">mín.</span><span>' + fmtMoeda(s.min) + '</span>' +
+            '<span class="k">máx.</span><span>' + fmtMoeda(s.max) + '</span>' +
+            '<span class="k">média</span><span>' + fmtMoeda(s.media) + '</span>' +
+            '<span class="k">mediana</span><span>' + fmtMoeda(s.mediana) + '</span>' +
+            '<span class="k">desvio</span><span>' + fmtMoeda(s.desvio) + '</span>' +
+            '<span class="k">amplitude</span><span>' + fmtMoeda(s.amplitude) + '</span>' +
+            '</div>';
+        });
+    })
+    .on('mouseleave', function(){ tooltip.style('opacity', 0); });
+}
+
+function renderPainelPadroes(){
+  const container = document.getElementById('padrao-list');
+  container.innerHTML = '';
+  padroes.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'padrao-btn' + (p === padraoAtual ? ' active' : '');
+    btn.textContent = ROTULOS[p];
+    btn.onclick = () => { padraoAtual = p; renderPainelPadroes(); renderMapa(); };
+    container.appendChild(btn);
+  });
+}
+
+function atualizarTrackVisual(){
+  const pctIni = (anoIni-ANO_MIN)/(ANO_MAX-ANO_MIN)*100;
+  const pctFim = (anoFim-ANO_MIN)/(ANO_MAX-ANO_MIN)*100;
+  document.getElementById('track-fill').style.left = pctIni + '%';
+  document.getElementById('track-fill').style.width = (pctFim-pctIni) + '%';
+  document.getElementById('ano-ini-label').textContent = anoIni;
+  document.getElementById('ano-fim-label').textContent = anoFim;
+}
+
+const sliderIni = document.getElementById('slider-ini');
+const sliderFim = document.getElementById('slider-fim');
+
+sliderIni.addEventListener('input', () => {
+  anoIni = Math.min(+sliderIni.value, anoFim);
+  sliderIni.value = anoIni;
+  atualizarTrackVisual(); renderMapa();
+});
+sliderFim.addEventListener('input', () => {
+  anoFim = Math.max(+sliderFim.value, anoIni);
+  sliderFim.value = anoFim;
+  atualizarTrackVisual(); renderMapa();
+});
+
+renderPainelPadroes();
+atualizarTrackVisual();
+renderMapa();
+</script>
+</body>
+</html>
