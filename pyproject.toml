@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "itbi-sp-valor-m2"
+name = "mapa-valor-m2-sao-paulo-itbi"
 version = "0.1.0"
 description = "Valor do m² de apartamentos em São Paulo por distrito e padrão construtivo a partir de dados abertos de ITBI, com camada de ML e validação temporal."
 readme = "README.md"

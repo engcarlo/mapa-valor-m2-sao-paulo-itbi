@@ -1,4 +1,4 @@
-# itbi-sp-valor-m2
+# mapa-valor-m2-sao-paulo-itbi
 
 **Quanto vale o m² de um apartamento em São Paulo, por distrito e padrão construtivo, segundo 1,1 milhão de transações reais de ITBI (2006 a 2026)?**
 
