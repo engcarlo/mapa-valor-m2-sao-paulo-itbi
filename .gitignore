@@ -1,6 +1,5 @@
 # dados brutos grandes / de terceiros: ficam locais; ver data/README.md e MANIFEST.sha256
 data/raw/itbi/
-data/raw/census_code_cep_coordinates.csv
 data/cache/
 outputs/
 __pycache__/

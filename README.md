@@ -6,7 +6,8 @@ Pipeline reprodutível que parte dos dados abertos de ITBI da Prefeitura de São
 estima o valor com um modelo hedônico e com uma camada de ML validada no tempo, e publica um **mapa coroplético interativo** (slider de período e estatísticas por distrito).
 
 ![mapa](docs/mapa_screenshot.png)
-> Mapa interativo: abra [`docs/mapa_preco_m2_distrito_sp.html`](docs/mapa_preco_m2_distrito_sp.html) no navegador. Arquivo único, com dados e D3 embutidos (só as fontes vêm do Google Fonts).
+> **Mapa online:** https://engcarlo.github.io/mapa-valor-m2-sao-paulo-itbi/ (GitHub Pages, pasta `/docs`).
+> Ou abra [`docs/mapa_preco_m2_distrito_sp.html`](docs/mapa_preco_m2_distrito_sp.html) no navegador. Arquivo único, com dados e D3 embutidos (só as fontes vêm do Google Fonts).
 
 ## Resultado principal
 

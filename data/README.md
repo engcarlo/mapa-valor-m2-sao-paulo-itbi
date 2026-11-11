@@ -6,7 +6,7 @@ Nada aqui é gerado pelo código, exceto `cache/`. O que está versionado no Git
 |---|---|---|
 | `raw/bcdata_sgs_21340.csv` | sim (pequeno) | Banco Central, série SGS 21340 (IVG-R). API: `https://api.bcb.gov.br/dados/serie/bcdata.sgs.21340/dados?formato=json` |
 | `raw/itbi/*.xlsx` (21 arquivos, ~480 MB) | **não** | Prefeitura de São Paulo, "Guias de ITBI pagas" (portal de dados abertos da SF/SP), um arquivo por ano, 2006 a 2026 (parcial). |
-| `raw/census_code_cep_coordinates.csv` (21 MB) | **não** | Kaggle, `millengustavo/ibge-censo-cep-coordenadas` (POSTCODE, LON, LAT, CD_GEOCODI). Dataset de terceiros: confira a licença antes de redistribuir. |
+| `raw/census_code_cep_coordinates.csv` (21 MB) | **sim** | Kaggle, `millengustavo/ibge-censo-cep-coordenadas` (POSTCODE, LON, LAT, CD_GEOCODI). Dataset de terceiros versionado aqui para reprodutibilidade; **confira a licença na página do Kaggle** antes de redistribuir o repositório em outros contextos. |
 | `cache/` | não | gerado por `itbi-sp base` (parquet por ano, ~20 s por ano na primeira leitura) |
 
 `raw/MANIFEST.sha256` lista tamanho e SHA-256 de cada arquivo bruto, para conferir que você tem exatamente os mesmos
