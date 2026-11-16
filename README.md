@@ -76,6 +76,6 @@ tests/  docs/  data/
 ## Fontes e licenças
 
 ITBI: dados abertos da Prefeitura de São Paulo. IVG-R: Banco Central do Brasil (SGS 21340). Limites de distrito: GeoSampa (via `codigourbano/distritos-sp`).
-Coordenadas por CEP: dataset de terceiros no Kaggle (não redistribuído). Código sob licença MIT.
+Coordenadas por CEP: dataset de terceiros no Kaggle, incluído em `data/raw/` para reprodutibilidade (confira a licença original). Código sob licença MIT.
 
-Autor: Carlo Yukio Nunes (engenheiro civil e cientista de dados).
+Designed by [Carlo Yukio](https://ud.me/quantatron.crypto)
