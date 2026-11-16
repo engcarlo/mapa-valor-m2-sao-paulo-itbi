@@ -46,7 +46,7 @@ itbi-sp diagnostico --config config.toml   # R² por era: o efeito de distrito n
 itbi-sp ml          --config config.toml   # experimento de ML, tabelas em outputs/
 ```
 
-Os dados brutos não estão no Git; ver [`data/README.md`](data/README.md) (fontes, manifesto SHA-256).
+Os 21 xlsx de ITBI (~480 MB) não estão no Git; o IVG-R e o CSV de CEP estão em `data/raw/`. Ver [`data/README.md`](data/README.md) (fontes, manifesto SHA-256).
 
 ## Estrutura
 
